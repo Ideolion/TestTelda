@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.example.TestTelda.controller;
 
 import com.example.TestTelda.entity.Region;
@@ -23,62 +19,83 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * Класс REST контроллер
  *
- * @author kiry
+ * @author Уфилин Д.В.
  */
 @RestController
 @RequestMapping("/catalog")
 public class RegionController {
- @Autowired
+
+    @Autowired
     private RegionRepository regionRepository;
 
-// получить все регионы из базы
+    /**
+     * Метод получает список всех регионов в базе
+     *
+     * @return список регионов
+     */
     @GetMapping("/regions")
-    public List<Region> getAllUsers()
-    {
+    public List<Region> getAllUsers() {
         return regionRepository.findAll();
     }
 
-// создать новый регион в базе
+    /**
+     * Метод добавляет новый регион в базу данных
+     *
+     * @param region добавляемый регион.
+     * @return регион который был добавлен
+     * @exception RegionIdExistException()
+     */
     @PostMapping("/regions")
-    public Region createRegion(@RequestBody Region region)  {
-        if(regionRepository.findById(region.getId())==null) {
+    public Region createRegion(@RequestBody Region region) {
+        if (regionRepository.findById(region.getId()) == null) {
             int id = regionRepository.insert(region);
             return regionRepository.findById(region.getId());
-        }else
-        {
+        } else {
             throw new RegionIdExistException();
         }
 
     }
 
-// получить имеющийся в базе регион по id
+    /**
+     * Метод для получения имеющегося в базе данных региона по его ID
+     *
+     * @param id идентификационный номер региона.
+     * @return регион, который был запрошен
+     * @exception RegionIdNotFoundException()
+     */
     @GetMapping("/regions/{id}")
     public ResponseEntity<Region> getRegionById(@PathVariable Long id) {
         Region region = regionRepository.findById(id);
-        if(region==null)
-        {
-            throw new RegionIdNotFoundException();
+        if (region != null) {
+            return ResponseEntity.ok(region);
         }
-        return ResponseEntity.ok(region);
+        throw new RegionIdNotFoundException();
     }
 
 // обновить имеющийся в базе регион
+    /**
+     * Метод обновляет имеющийся в базе данных регион
+     *
+     * @param id идентификационный номер региона.
+     * @param region данные региона для изменения
+     * @return регион который был изменен
+     * @exception RegionIdNotFoundException()
+     */
     @PutMapping("/regions/{id}")
     public ResponseEntity<Region> updateRegion(@PathVariable Long id,
-             @RequestBody Region regionDetails) {
-            if(regionRepository.update(new Region(id, regionDetails.getRegionfullname(), regionDetails.getRegionshortname()))==0)
-            {
-                throw new RegionIdNotFoundException();
-            }
-
-       return ResponseEntity.ok(regionRepository.findById(id));
+            @RequestBody Region region) {
+        int resp = regionRepository.update(new Region(id, region.getRegionfullname(), region.getRegionshortname()));
+        if (resp != 0) {
+            return ResponseEntity.ok(regionRepository.findById(id));
+        }
+        throw new RegionIdNotFoundException();
     }
 
 // удалить регион из базы по id
     @DeleteMapping("/regions/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteUser
-               (@PathVariable Long id) {
+    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id) {
         regionRepository.deleteById(id);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);

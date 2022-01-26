@@ -1,17 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.example.TestTelda.exseptions;
 
 /**
  *
- * @author kiry
+ * @author Уфилин Д.В.
  */
-public class RegionIdExistException extends RuntimeException{
-    
+public class RegionIdExistException extends RuntimeException {
+
+    /**
+     *
+     * Исключение, которое выбрасывается в случае попытки добавить в базу данных регион,
+     * который уже существует в базе. Проверка ведется по ID региона
+     */
+
     public RegionIdExistException() {
         super("Регион с таким id уже существует");
     }
-    
+
 }
