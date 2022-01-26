@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class RegionController {
      * @return список регионов
      */
     @GetMapping("/regions")
+    @Transactional
     public List<Region> getAllUsers() {
         return regionRepository.findAll();
     }
@@ -48,6 +50,7 @@ public class RegionController {
      * @exception RegionIdExistException()
      */
     @PostMapping("/regions")
+    @Transactional
     public Region createRegion(@RequestBody Region region) {
         if (regionRepository.findById(region.getId()) == null) {
             int id = regionRepository.insert(region);
@@ -66,6 +69,7 @@ public class RegionController {
      * @exception RegionIdNotFoundException()
      */
     @GetMapping("/regions/{id}")
+    @Transactional
     public ResponseEntity<Region> getRegionById(@PathVariable Long id) {
         Region region = regionRepository.findById(id);
         if (region != null) {
@@ -84,6 +88,7 @@ public class RegionController {
      * @exception RegionIdNotFoundException()
      */
     @PutMapping("/regions/{id}")
+    @Transactional
     public ResponseEntity<Region> updateRegion(@PathVariable Long id,
             @RequestBody Region region) {
         int resp = regionRepository.update(new Region(id, region.getRegionfullname(), region.getRegionshortname()));
@@ -104,6 +109,7 @@ public class RegionController {
      * @exception RegionIdNotFoundException()
      */
     @DeleteMapping("/regions/{id}")
+    @Transactional
     public ResponseEntity<Map<String, Boolean>> deleteRegion(@PathVariable Long id) {
         int resp = regionRepository.deleteById(id);
         System.out.println(resp);
