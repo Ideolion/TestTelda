@@ -70,11 +70,11 @@ public class RegionController {
         Region region = regionRepository.findById(id);
         if (region != null) {
             return ResponseEntity.ok(region);
-        }
+        }else {
         throw new RegionIdNotFoundException();
+        }
     }
 
-// обновить имеющийся в базе регион
     /**
      * Метод обновляет имеющийся в базе данных регион
      *
@@ -88,17 +88,33 @@ public class RegionController {
             @RequestBody Region region) {
         int resp = regionRepository.update(new Region(id, region.getRegionfullname(), region.getRegionshortname()));
         if (resp != 0) {
-            return ResponseEntity.ok(regionRepository.findById(id));
-        }
+        return ResponseEntity.ok(regionRepository.findById(id));
+        }else {
         throw new RegionIdNotFoundException();
+        }
     }
 
-// удалить регион из базы по id
+   
+    /**
+     * Метод удаляет имеющийся в базе данных регион
+     *
+     * @param id идентификационный номер региона.
+     * @param region данные региона для изменения
+     * @return регион который был изменен
+     * @exception RegionIdNotFoundException()
+     */
     @DeleteMapping("/regions/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id) {
-        regionRepository.deleteById(id);
+    public ResponseEntity<Map<String, Boolean>> deleteRegion(@PathVariable Long id) {
+        int resp = regionRepository.deleteById(id);
+        System.out.println(resp);
+        if (resp != 0) {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
+        }else {
+        throw new RegionIdNotFoundException();
+        }
+        
+       
     }
 }
