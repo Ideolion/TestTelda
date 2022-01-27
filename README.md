@@ -25,3 +25,4 @@
 "regionshortname":"СПб"
 }
 - для удаления региона из справочника необходимо отправить DELETE запрос на http://localhost:8080/catalog/regions/{id}, где id - идентификатор региона (ранее присвоенный номер).
+В папке проекта имеется Json- файл с запросами Postman -  TeldaTest.postman_collection.json
