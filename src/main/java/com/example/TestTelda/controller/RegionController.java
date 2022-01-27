@@ -80,6 +80,7 @@ public class RegionController {
         Region region = regionRepository.findById(id);
         if (region != null) {
             return ResponseEntity.ok(region);
+            
         } else {
             throw new RegionIdNotFoundException();
         }
