@@ -6,6 +6,8 @@ import com.example.TestTelda.exseptions.RegionIdNotFoundException;
 import com.example.TestTelda.repository.RegionRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +38,9 @@ public class RegionController {
      * @return список регионов
      */
     @GetMapping("/regions")
-    @Cacheable("regions")
+    @Cacheable("region")
     @Transactional
-    public List<Region> getAllUsers() {
+    public List<Region> getRegions() {
         return regionRepository.findAll();
     }
 
@@ -50,22 +52,21 @@ public class RegionController {
      * @exception RegionIdExistException()
      */
     @PostMapping("/regions")
-    @Cacheable("regions")
+    @CacheEvict(value = "region", allEntries = true)
     @Transactional
     public ResponseEntity<String> createRegion(@RequestBody Region region) {
-
         if (region.getId() == null || region.getRegionfullname() == null || region.getRegionshortname() == null) {
             return ResponseEntity.ok("Недостаточно данных для создания записи");
         } else {
             if (regionRepository.findById(region.getId()) == null) {
                 int id = regionRepository.insert(region);
-                return ResponseEntity.ok ("регион с ID: " + region.getId() + " cоздан.");
+                return ResponseEntity.ok("регион с ID: " + region.getId() + " cоздан.");
             } else {
                 throw new RegionIdExistException();
             }
         }
     }
-      
+
     /**
      * Метод получает имеющийся в базе данных регион по его ID
      *
@@ -74,13 +75,12 @@ public class RegionController {
      * @exception RegionIdNotFoundException()
      */
     @GetMapping("/regions/{id}")
-        @Cacheable("regions")
-        @Transactional
-        public ResponseEntity<Region> getRegionById(@PathVariable Long id) {
+    @Cacheable("region")
+    @Transactional
+    public ResponseEntity<Region> getRegionById(@PathVariable Long id) {
         Region region = regionRepository.findById(id);
         if (region != null) {
             return ResponseEntity.ok(region);
-            
         } else {
             throw new RegionIdNotFoundException();
         }
@@ -95,8 +95,9 @@ public class RegionController {
      * @exception RegionIdNotFoundException()
      */
     @PutMapping("/regions/{id}")
-        @Transactional
-        public ResponseEntity<Region> updateRegion(@PathVariable Long id,
+    @Transactional
+    @CacheEvict(value = "region", allEntries = true)
+    public ResponseEntity<Region> updateRegion(@PathVariable Long id,
             @RequestBody Region region) {
         int resp = regionRepository.update(new Region(id, region.getRegionfullname(), region.getRegionshortname()));
         if (resp != 0) {
@@ -115,8 +116,9 @@ public class RegionController {
      * @exception RegionIdNotFoundException()
      */
     @DeleteMapping("/regions/{id}")
-        @Transactional
-        public ResponseEntity<String> deleteRegion(@PathVariable Long id) {
+    @CacheEvict(value = "region", allEntries = true)
+    @Transactional
+    public ResponseEntity<String> deleteRegion(@PathVariable Long id) {
         int resp = regionRepository.deleteById(id);
         if (resp != 0) {
             return ResponseEntity.ok("регион с ID: " + id + " удален.");
