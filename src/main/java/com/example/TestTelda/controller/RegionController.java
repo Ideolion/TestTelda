@@ -7,7 +7,6 @@ import com.example.TestTelda.repository.RegionRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,7 +110,6 @@ public class RegionController {
      * Метод удаляет имеющийся в базе данных регион
      *
      * @param id идентификационный номер региона.
-     * @param region данные региона для изменения
      * @return регион который был изменен
      * @exception RegionIdNotFoundException()
      */
