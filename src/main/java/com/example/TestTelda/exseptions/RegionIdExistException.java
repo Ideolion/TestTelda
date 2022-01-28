@@ -9,7 +9,7 @@ public class RegionIdExistException extends RuntimeException {
     /**
      *
      * Исключение, которое выбрасывается в случае попытки добавить в базу данных регион,
-     * который уже существует в базе. Проверка ведется по ID региона
+     * который уже существует в базе.
      */
 
     public RegionIdExistException() {
