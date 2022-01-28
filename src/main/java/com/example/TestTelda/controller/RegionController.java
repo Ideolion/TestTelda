@@ -36,6 +36,7 @@ public class RegionController {
      *
      * @return список регионов
      */
+    
     @GetMapping("/regions")
     @Cacheable("region")
     @Transactional
@@ -50,6 +51,7 @@ public class RegionController {
      * @return регион который был добавлен
      * @exception RegionIdExistException()
      */
+    
     @PostMapping("/regions")
     @CacheEvict(value = "region", allEntries = true)
     @Transactional
@@ -58,7 +60,7 @@ public class RegionController {
             return ResponseEntity.ok("Недостаточно данных для создания записи");
         } else {
             if (regionRepository.findById(region.getId()) == null) {
-                int id = regionRepository.insert(region);
+                int id = regionRepository.insertRegion(region);
                 return ResponseEntity.ok("регион с ID: " + region.getId() + " cоздан.");
             } else {
                 throw new RegionIdExistException();
@@ -73,6 +75,7 @@ public class RegionController {
      * @return регион, который был запрошен
      * @exception RegionIdNotFoundException()
      */
+    
     @GetMapping("/regions/{id}")
     @Cacheable("region")
     @Transactional
@@ -93,12 +96,13 @@ public class RegionController {
      * @return регион который был изменен
      * @exception RegionIdNotFoundException()
      */
+    
     @PutMapping("/regions/{id}")
     @Transactional
     @CacheEvict(value = "region", allEntries = true)
     public ResponseEntity<Region> updateRegion(@PathVariable Long id,
             @RequestBody Region region) {
-        int resp = regionRepository.update(new Region(id, region.getRegionfullname(), region.getRegionshortname()));
+        int resp = regionRepository.updateRegion(new Region(id, region.getRegionfullname(), region.getRegionshortname()));
         if (resp != 0) {
             return ResponseEntity.ok(regionRepository.findById(id));
         } else {
@@ -113,6 +117,7 @@ public class RegionController {
      * @return регион который был изменен
      * @exception RegionIdNotFoundException()
      */
+    
     @DeleteMapping("/regions/{id}")
     @CacheEvict(value = "region", allEntries = true)
     @Transactional
@@ -124,5 +129,4 @@ public class RegionController {
             throw new RegionIdNotFoundException();
         }
     }
-
 }

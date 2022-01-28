@@ -28,11 +28,11 @@ public interface RegionRepository {
 
     @Insert("INSERT INTO region(id, regionfullname, regionshortname) " +
          " VALUES (#{id}, #{regionfullname}, #{regionshortname})")
-    public int insert(Region region);
+    public int insertRegion(Region region);
 
     @Update("Update region set regionfullname=#{regionfullname}, " +
          " regionshortname=#{regionshortname} where id=#{id}")
-    public int update(Region region);
+    public int updateRegion(Region region);
     
     
 }
