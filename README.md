@@ -8,7 +8,7 @@
 Проект выполнен на spring Boot c с использованием базы даннных h2database и MyBatis.
 
 Для запуска проекта необходимо:
-- в папке проекта выполнить команду mvn spring-boot:run
+- в папке проекта выполнить команду mvn package, затем mvn spring-boot:run
 - с помощью Postman или другим удобным способом отправить запросы по адресу http://localhost:8080/catalog/regions
 следующего вида:
 - Для создания элемента справочника POST запрос на http://localhost:8080/catalog/regions вида:<br>
