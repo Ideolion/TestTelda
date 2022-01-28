@@ -19,10 +19,10 @@
 }<br>
 - Для получения всех регионов из справочника - GET запрос на http://localhost:8080/catalog/regions
 - Для получения региона по номеру id - GET запрос на http://localhost:8080/catalog/regions/{id}, где id - идентификатор региона (ранее присвоенный номер);
-- Для изменения данных региона отправить PUT запрос на  http://localhost:8080/catalog/regions/{id}, где id - идентификатор региона (ранее присвоенный номер), вид запроса:
-{
-"regionfullname": "Санкт-Петербург",
-"regionshortname":"СПб"
-}
+- Для изменения данных региона отправить PUT запрос на  http://localhost:8080/catalog/regions/{id}, где id - идентификатор региона (ранее присвоенный номер), вид запроса:<br>
+{<br>
+"regionfullname": "Санкт-Петербург",<br>
+"regionshortname":"СПб"<br>
+}<br>
 - для удаления региона из справочника необходимо отправить DELETE запрос на http://localhost:8080/catalog/regions/{id}, где id - идентификатор региона (ранее присвоенный номер).<br>
 В папке проекта имеется Json- файл с запросами Postman -  TeldaTest.postman_collection.json
